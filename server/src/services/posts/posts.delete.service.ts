@@ -1,5 +1,5 @@
-import { PostsDAO } from "models/posts/posts.dao";
-import { UserDAO } from "models/user/user.dao";
+import { PostsDAO } from "../../models/posts/posts.dao";
+import { UserDAO } from "../../models/user/user.dao";
 import { DeleteRequestBody } from "../../types/requests/posts.types";
 
 export async function deletePostsService({ postId, login }: DeleteRequestBody) {
@@ -14,7 +14,7 @@ export async function deletePostsService({ postId, login }: DeleteRequestBody) {
         }
     }
     const user = await UserDAO.get(login);
-    const match = post.user?.toString() === user?._id;
+    const match = post.user?.toString() === user?._id.toString();
 
     if (!match) {
         return {

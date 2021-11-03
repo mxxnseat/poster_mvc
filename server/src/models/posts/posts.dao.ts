@@ -1,4 +1,3 @@
-import { ReturnModelType } from "@typegoose/typegoose";
 import { CreateRequestBody } from "../../types/requests/posts.types";
 import Post from "./posts.model";
 
@@ -29,6 +28,6 @@ export class PostsDAO {
     }
 
     public static async deleteOne(postId: string) {
-
+        await Post.findByIdAndDelete(postId);
     }
 }

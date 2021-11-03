@@ -20,8 +20,7 @@ export class UserDAO {
     public static async get(login: string) {
         return await User.findOne({ login }, {
             project: {
-                password: 0,
-                _id: 0
+                password: 0
             }
         });
     }
