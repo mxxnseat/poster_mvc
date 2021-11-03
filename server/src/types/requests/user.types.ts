@@ -5,5 +5,6 @@ export interface CreateRequestBody {
     username: string
 }
 export interface DeleteRequestBody {
-    password: string
+    password: string,
+    login: string
 }

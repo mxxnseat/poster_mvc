@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 
-import { createPost } from "../controllers/posts/posts.controller";
-
+import { createPosts, deletePosts } from "../controllers/posts/posts.controller";
+import asyncHandler from "express-async-handler"
 
 const router = Router();
 
@@ -11,7 +11,9 @@ router
 
         next();
     })
-    .post("/create", createPost);
+    .post("/create", asyncHandler(createPosts))
+    .delete("/delete", asyncHandler(deletePosts))
+
 
 export default {
     endpoint: "/posts",

@@ -11,6 +11,9 @@ export class Post {
     public title!: string
 
     @prop({ required: true })
+    public alias!: string
+
+    @prop({ required: true })
     public text!: string
 }
 

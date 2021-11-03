@@ -4,22 +4,19 @@ import { CreateRequestBody } from "../../types/requests/user.types";
 
 
 export async function createUserService({ login, password, username }: CreateRequestBody) {
-    try {
-        const passwordHash = bcrypt.hashSync(password, 7);
 
-        const user = new User({
-            login,
-            password: passwordHash,
-            username
-        });
+    const passwordHash = bcrypt.hashSync(password, 7);
 
-        const saveUser = await user.save();
+    const user = new User({
+        login,
+        password: passwordHash,
+        username
+    });
 
-        return {
-            username: saveUser.username,
-            posts: saveUser.posts,
-        };
-    } catch (e: unknown) {
-        throw Error();
-    }
+    const saveUser = await user.save();
+
+    return {
+        username: saveUser.username,
+        posts: saveUser.posts,
+    };
 }

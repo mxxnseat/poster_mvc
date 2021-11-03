@@ -1,32 +1,9 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
+import { createPostsService } from "../../services/posts/posts.create.service";
+import { CreateRequestBody } from "../../types/requests/posts.types";
 
-import Post from "../../models/post.model";
+export async function createPosts(req: Request<{}, {}, CreateRequestBody>, res: Response, next: NextFunction) {
+    const { status, data } = await createPostsService(req.body);
 
-interface RequestBody {
-    userId: string,
-    title: string,
-    text: string
-}
-
-export async function createPost(req: Request<{}, {}, RequestBody>, res: Response) {
-    try {
-        const { userId, title, text } = req.body;
-
-        const post = new Post({
-            title,
-            text,
-            user: userId
-        });
-
-        await post.save();
-
-        res.status(200).json({
-            message: "Post created successfully"
-        });
-    } catch (e: unknown) {
-        console.log(e);
-        res.status(500).json({
-            message: "Oooops something went wrong",
-        });
-    }
+    res.status(status).json(data);
 }
