@@ -1,10 +1,10 @@
 export interface CreateRequestBody {
-    userId: string,
+    login: string,
     title: string,
     text: string
 }
 
 export interface DeleteRequestBody {
-    userId: string,
+    login: string,
     postId: string
 }

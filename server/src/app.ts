@@ -1,6 +1,5 @@
 import express, { Application as IApplication, Request, Response, NextFunction } from "express";
-import { errorMiddleware } from "./middlewares/error.middleware";
-import { Route } from "types/express.types";
+import { Route } from "./types/express.types";
 
 
 type middlewaresSplit = {

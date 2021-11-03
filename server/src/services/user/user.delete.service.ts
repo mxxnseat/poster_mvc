@@ -1,16 +1,18 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcrypt"
 
-import User from "../../models/user.model";
-import { DeleteRequestBody } from "types/requests/user.types";
+import { UserDAO } from "../../models/user/user.dao";
+import { DeleteRequestBody } from "../../types/requests/user.types";
 
 
 export async function deleteUserService({ login, password }: DeleteRequestBody) {
-
-    const user = await User.findOne({ login });
+    const user = await UserDAO.get(login);
 
     if (!user) {
         return {
-            message: "User not found :("
+            status: 404,
+            data: {
+                message: "User not found :("
+            }
         }
     }
 
@@ -18,14 +20,20 @@ export async function deleteUserService({ login, password }: DeleteRequestBody) 
 
     if (!match) {
         return {
-            message: "Not correct password"
+            status: 404,
+            data: {
+                message: "Not correct password"
+            }
         }
     }
 
-    await User.deleteOne({ login });
+    await UserDAO.delete(login);
 
     return {
-        message: "User delete!",
-        redirectUrl: "/"
+        status: 200,
+        data: {
+            message: "User delete!",
+            redirectUrl: "/"
+        }
     }
 }

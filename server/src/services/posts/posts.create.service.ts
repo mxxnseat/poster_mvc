@@ -1,13 +1,13 @@
-import Post from "../../models/post.model";
-import User from "../../models/user.model";
+import { PostsDAO } from "../../models/posts/posts.dao";
+import { UserDAO } from "../../models/user/user.dao";
 
 import { CreateRequestBody } from "../../types/requests/posts.types";
 
 import { transliteService } from "../translite.service";
 
 
-export async function createPostsService({ userId, title, text }: CreateRequestBody) {
-    const postByTitle = await Post.findOne({ title });
+export async function createPostsService({ login, title, text }: CreateRequestBody) {
+    const postByTitle = await PostsDAO.getOne(title);
 
     if (postByTitle) {
         return {
@@ -19,25 +19,16 @@ export async function createPostsService({ userId, title, text }: CreateRequestB
     }
 
     const alias = transliteService(title);
-    const post = new Post({
-        title,
-        text,
-        alias,
-        user: userId,
-    });
 
-    await post.save();
-    await User.findByIdAndUpdate(userId, {
-        $push: {
-            posts: post._id
-        }
-    })
+    const user = await UserDAO.get(login);
+    const post = await PostsDAO.create({ user: user?._id, title, text, alias });
+    await UserDAO.addPost(login, post.id);
 
     return {
         status: 200,
         data: {
             message: "Post created successfully",
-            redirectUri: `/${alias}`
+            redirectUri: `/${post.alias}`
         }
     }
 }

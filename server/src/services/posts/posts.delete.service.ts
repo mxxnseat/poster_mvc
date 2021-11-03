@@ -1,9 +1,9 @@
+import { PostsDAO } from "models/posts/posts.dao";
+import { UserDAO } from "models/user/user.dao";
 import { DeleteRequestBody } from "../../types/requests/posts.types";
-import Post from "../../models/post.model";
-import User from "../../models/user.model";
 
-export async function deletePostsService({ postId, userId }: DeleteRequestBody) {
-    const post = await Post.findById(postId);
+export async function deletePostsService({ postId, login }: DeleteRequestBody) {
+    const post = await PostsDAO.getById(postId);
 
     if (!post) {
         return {
@@ -13,8 +13,8 @@ export async function deletePostsService({ postId, userId }: DeleteRequestBody) 
             }
         }
     }
-
-    const match = post.user?.toString() === userId;
+    const user = await UserDAO.get(login);
+    const match = post.user?.toString() === user?._id;
 
     if (!match) {
         return {
@@ -25,12 +25,8 @@ export async function deletePostsService({ postId, userId }: DeleteRequestBody) 
         }
     }
 
-    await Post.findByIdAndRemove(postId);
-    await User.findByIdAndUpdate(userId, {
-        $pull: {
-            posts: postId
-        }
-    });
+    await PostsDAO.deleteOne(postId);
+    await UserDAO.deletePost(login, postId);
 
     return {
         status: 200,

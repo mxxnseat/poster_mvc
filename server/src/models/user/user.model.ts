@@ -1,6 +1,6 @@
 import { getModelForClass, isRefType, modelOptions, mongoose, prop, Ref } from "@typegoose/typegoose";
 import { RefType } from "mongoose";
-import { Post } from "./post.model";
+import { Post } from "../posts/posts.model";
 
 @modelOptions({ schemaOptions: { collection: "user", versionKey: false } })
 export class User {

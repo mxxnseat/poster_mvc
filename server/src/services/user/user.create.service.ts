@@ -1,22 +1,18 @@
 import bcrypt from "bcrypt";
-import User from "../../models/user.model";
+import { UserDAO } from "../../models/user/user.dao";
 import { CreateRequestBody } from "../../types/requests/user.types";
 
 
-export async function createUserService({ login, password, username }: CreateRequestBody) {
+export async function createUserService(data: CreateRequestBody) {
+    const passwordHash = bcrypt.hashSync(data.password, 7);
 
-    const passwordHash = bcrypt.hashSync(password, 7);
-
-    const user = new User({
-        login,
-        password: passwordHash,
-        username
-    });
-
-    const saveUser = await user.save();
+    const { username, posts } = await UserDAO.create({
+        ...data,
+        password: passwordHash
+    })
 
     return {
-        username: saveUser.username,
-        posts: saveUser.posts,
+        username,
+        posts
     };
 }
