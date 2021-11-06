@@ -20,7 +20,7 @@ export function useDeletePosts() {
             return // Save errors to storage
         }
 
-        // redirect to /
+        return data;
     }
 
     return {

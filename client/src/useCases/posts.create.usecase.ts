@@ -1,10 +1,10 @@
-import { PostCreateOptions } from "../domains/posts.domain";
-import { User } from "../domains/user.domain";
+import { Post, PostCreateOptions } from "../domains/posts.domain";
+import { User, UserId } from "../domains/user.domain";
+import { PostsPortIn } from "../ports/in/createPost.port";
 
 export function useCreatePosts() {
-    // THIS IS WRONG VARIANT 
-    function createPost(post: PostCreateOptions, user: User) {
-        const newPost = createPost(post, user);
+    async function createPost(post: PostCreateOptions, user: UserId): Promise<PostsPortIn> {
+        const newPost = new Post(post, user);
 
         // Fetch to backend.
         // [POST] /posts/create {...newPost}
@@ -16,10 +16,10 @@ export function useCreatePosts() {
             }
         };
         if (status >= 400) {
-            return // Save errors to storage
+            return data;
         }
 
-        // redirect to data.redirectUri
+        return data;
     }
 
     return {

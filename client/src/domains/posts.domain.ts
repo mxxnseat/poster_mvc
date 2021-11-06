@@ -3,7 +3,7 @@ import { UserId, User } from "./user.domain";
 export type PostTitle = string;
 export type PostText = string;
 
-export interface Post {
+export interface IPost {
     title: PostTitle,
     author: UserId,
     createTime: DateTimeString,
@@ -16,11 +16,17 @@ export interface PostCreateOptions {
     text: PostText
 }
 
-export function createPost(post: PostCreateOptions, user: User): Post {
-    return {
-        title: post.title,
-        author: user.id,
-        createTime: post.createTime,
-        text: post.createTime
+export class Post implements IPost {
+    public title: PostTitle;
+    public author: UserId;
+    public text: PostText;
+    public createTime: DateTimeString
+
+    constructor(post: PostCreateOptions, user: UserId) {
+        this.title = post.title;
+        this.author = user;
+        this.text = post.text;
+        this.createTime = post.createTime;
+
     }
 }

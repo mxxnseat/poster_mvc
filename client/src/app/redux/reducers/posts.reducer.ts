@@ -1,4 +1,4 @@
-import { PostsActions, PostsInitialState } from "../types/posts.redux.type";
+import { EnumPostsActions, PostsActions, PostsInitialState } from "../types/posts.redux.type";
 
 const initialState: PostsInitialState = {
     list: [
@@ -12,8 +12,14 @@ const initialState: PostsInitialState = {
     ]
 }
 
-export const postsReducer = (state = initialState, { type, payload }: PostsActions) => {
+export const postsReducer = (state = initialState, { type, payload }: PostsActions): PostsInitialState => {
     switch (type) {
+        case EnumPostsActions.CREATE_POST: {
+            return {
+                ...state,
+                list: [...state.list, payload]
+            }
+        }
         default: return state;
     }
 }

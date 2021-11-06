@@ -9,7 +9,7 @@ export const PostsPage: FC<{}> = () => {
   return (
     <>
       {posts.map((post) => {
-        return <Post {...post} />;
+        return <Post key={post.createTime} {...post} />;
       })}
     </>
   );
