@@ -9,14 +9,14 @@ export function useCreatePosts() {
         // Fetch to backend.
         // [POST] /posts/create {...newPost}
         const { status, data } = {
-            status: 200,
+            status: 400,
             data: {
                 message: "Post create",
                 redirectUri: "/posts/alias"
             }
         };
         if (status >= 400) {
-            return data;
+            return Promise.reject("Oooops something went wrong");
         }
 
         return data;

@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreatePosts } from "../../useCases/posts.create.usecase";
+import { toast } from "react-toastify";
 
 const initialValues = {
   title: "",
@@ -24,11 +25,19 @@ export const CreatePost = () => {
         "mxxnseat"
       )
       .then((data) => {
-        console.log(data);
         navigate(data.redirectUri);
       })
-      .catch((e: unknown) => {
-        console.log(e);
+      .catch((e: string) => {
+        toast.error(e, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
       });
   };
 
